@@ -1,0 +1,8 @@
+use("platzi_store");
+db.products.find();
+// db.compras.insertOne({
+//    _id: 2,
+//     name: "Redmi Note 9",
+//     price: 300,
+//     category: "cellphones",
+// });
