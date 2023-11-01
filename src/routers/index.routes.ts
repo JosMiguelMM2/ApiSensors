@@ -1,23 +1,6 @@
-import { Router } from 'express';
-import { conection } from '../config/db';
-
+import { Router} from 'express';
+import led from '../controllers/Leds/leds.controller';
 const router = Router();
-//ESTO ES UNA PRUEBA, NO ES NECESARIO
-router.get('/ping', (req, res) => {
-  req.body;
-  console.log('someone pinged her');
-  const client = conection();
-  client.then((client) => {
-    client
-      .db('platzi_store')
-      .collection('products')
-      .find({})
-      .toArray()
-      .then((data) => {
-        res.json(data);
-        client.close();
-      });
-  });
-});
+router.get('/Stado', led);
 
 export default router;

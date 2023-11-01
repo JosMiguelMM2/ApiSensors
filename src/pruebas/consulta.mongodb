@@ -1,8 +1,33 @@
-use("platzi_store");
-db.products.find();
-// db.compras.insertOne({
-//    _id: 2,
-//     name: "Redmi Note 9",
-//     price: 300,
-//     category: "cellphones",
-// });
+use("Home");
+db.Status_orders.updateOne({_id: 5}, {$set: {statusLed: "LOW"}})
+//db.Status_orders.updateMany({_id: { $in: [1, 2, 3, 4, 5] }}, {$set: {statusLed: "HIGH"}})
+//db.Status_orders.find();
+/*db.Status_orders.insertMany([
+  {
+    _id: 1,
+    nombre: "Led1",
+    statusLed:"HIGH",
+  },
+  {
+    _id: 2,
+    nombre: "Led2",
+    statusLed:"LOW",
+  },
+  {
+    _id: 3,
+    nombre: "Led3",
+    statusLed:"HIGH",
+  },
+  {
+    _id: 4,
+    nombre: "Led4",
+    statusLed:"HIGH",
+  },
+  {
+    _id: 5,
+    nombre: "Led5",
+    statusLed:"HIGH",
+  },
+]);*/
+
+
