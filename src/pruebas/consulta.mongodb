@@ -1,5 +1,5 @@
 use("Home");
-db.Status_orders.updateOne({_id: 5}, {$set: {statusLed: "LOW"}})
+//db.Status_orders.updateOne({_id: 4}, {$set: {statusLed: "LOW"}})
 //db.Status_orders.updateMany({_id: { $in: [1, 2, 3, 4, 5] }}, {$set: {statusLed: "HIGH"}})
 //db.Status_orders.find();
 /*db.Status_orders.insertMany([
@@ -30,4 +30,10 @@ db.Status_orders.updateOne({_id: 5}, {$set: {statusLed: "LOW"}})
   },
 ]);*/
 
+/*db.sensors_Data.insertOne({
+  name: "Lm25",
+  temperature: 20,
+  Datatime: "2021-10-09T18:00:00.000Z",
+});*/
 
+db.sensors_Data.find();
