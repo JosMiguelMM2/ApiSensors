@@ -35,5 +35,16 @@ use("Home");
   temperature: 20,
   Datatime: "2021-10-09T18:00:00.000Z",
 });*/
-
+db.Status_orders.insertMany([
+  {
+    _id: 6,
+    nombre: "Puerta1S",
+    degrees:30,
+  },
+  {
+    _id: 7,
+    nombre: "Puerta2S",
+    degrees:90,
+  },
+]);
 db.sensors_Data.find();
