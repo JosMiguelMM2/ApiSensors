@@ -9,7 +9,8 @@ app.use(indexroutes);
 
 app.use(cors({
   origin: 'http://localhost:4200',
-  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
 }));
 
 app.listen(PORT, () => {
