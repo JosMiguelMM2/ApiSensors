@@ -6,5 +6,4 @@ const router = Router();
 router.get('/Stado', led);
 router.post('/Newta', Sensor);
 router.patch('/Orden/:id', orders);
-
 export default router;
