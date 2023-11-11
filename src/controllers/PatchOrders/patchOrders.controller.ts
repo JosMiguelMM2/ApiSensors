@@ -1,13 +1,26 @@
 import { Request, Response } from 'express';
 import { patchOrdersService } from '../../services/patchOrders/patchOrdersService';
 import { patchOrdersDServosService } from '../../services/patchServoOrders/patchServoOrders.server';
+import {SendSuccessResponse} from '../../utils/controllers/patchOrdersFunction/responseUtils';
 
-function Mensaje(result: boolean, res: Response) {
-  if (result) {
-    res.status(200).json({
-      status: 'success',
-      message: 'Operación completada correctamente',
-      data: result, // Puedes incluir información adicional si es necesario
+async function DoorOrder(
+  req: Request,
+  res: Response,
+  OrderIDInt: number,
+  Opendegrees: number,
+  Closedegrees: number
+) {
+  const puerta: String = req.body.StadoPuerta;
+  if (puerta == 'OPEN') {
+    const envio = await patchOrdersDServosService(OrderIDInt, Opendegrees);
+    SendSuccessResponse(envio, res);
+  } else if (puerta == 'CLOSE') {
+    const envio = await patchOrdersDServosService(OrderIDInt, Closedegrees);
+    SendSuccessResponse(envio, res);
+  } else {
+    res.status(400).json({
+      status: 'error',
+      message: 'Datos incorrectos',
     });
   }
 }
@@ -17,11 +30,16 @@ export default async (req: Request, res: Response) => {
   const OrderIDInt: number = parseInt(OrderID);
   try {
     if (OrderIDInt > 5 && OrderIDInt <= 7) {
-      const degreesD = req.body.degrees;
-      const degreesID = parseInt(degreesD);
-      const envio = await patchOrdersDServosService(OrderIDInt, degreesID);
-
-      Mensaje(envio, res);
+      switch (OrderIDInt) {
+        case 6:
+          DoorOrder(req, res, OrderIDInt, 90, 0);
+          break;
+        case 7:
+          DoorOrder(req, res, OrderIDInt, 90, 0);
+          break;
+        default:
+          break;
+      }
     } else if (OrderIDInt <= 5 && OrderIDInt > 0) {
       const statusLed = req.body.statusLed;
       if (!statusLed) {
@@ -36,7 +54,7 @@ export default async (req: Request, res: Response) => {
       } else {
         const ejecution = await patchOrdersService(OrderIDInt, statusLed);
 
-        Mensaje(ejecution, res);
+        SendSuccessResponse(ejecution, res);
       }
     } else {
       res.status(404).json({ error: 'Orden no encontrada' });
