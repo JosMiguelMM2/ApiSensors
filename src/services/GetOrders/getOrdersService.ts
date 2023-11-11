@@ -7,9 +7,9 @@ async function getOrdersService() {
       .db('Home')
       .collection('Status_orders')
       .find({})
+      .sort({ _id: 1 }) // Ordena de forma ascendente por el campo _id
       .toArray();
     client.close();
-    console.log('Connection closed');
     return data;
   } catch (error) {
     console.error('Error:', error);

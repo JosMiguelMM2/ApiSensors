@@ -1,17 +1,23 @@
 import express from 'express';
 import cors from 'cors';
 import indexroutes from './routers/index.routes';
+import config  from './dotenv/config';
 const app = express();
 const PORT = 3000;
 
+const url = config().fontend.url;
+app.use(
+  cors({
+    origin: `${url}`,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+  })
+);
+//app.use(cors());
 app.use(express.json());
 app.use(indexroutes);
 
-app.use(cors({
-  origin: 'http://localhost:4200',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
-}));
+
 
 app.listen(PORT, () => {
   console.log(`Server  running on port ${PORT}`);
