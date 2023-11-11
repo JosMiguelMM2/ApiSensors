@@ -24,14 +24,20 @@ export default async (req: Request, res: Response) => {
       Mensaje(envio, res);
     } else if (OrderIDInt <= 5 && OrderIDInt > 0) {
       const statusLed = req.body.statusLed;
-      console.log('hola');
       if (!statusLed) {
         return res.status(400).json({ error: 'Faltan datos requeridos' });
       }
 
-      const ejecution = await patchOrdersService(OrderIDInt, statusLed);
+      if (statusLed != 'LOW' && statusLed != 'HIGH') {
+        res.status(400).json({
+          status: 'error',
+          message: 'Datos incorrectos',
+        });
+      } else {
+        const ejecution = await patchOrdersService(OrderIDInt, statusLed);
 
-      Mensaje(ejecution, res);
+        Mensaje(ejecution, res);
+      }
     } else {
       res.status(404).json({ error: 'Orden no encontrada' });
     }
@@ -40,6 +46,5 @@ export default async (req: Request, res: Response) => {
       status: 'error',
       message: 'Error al procesar la solicitud',
     });
-
   }
 };
