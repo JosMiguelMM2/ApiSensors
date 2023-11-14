@@ -1,4 +1,4 @@
-use("Home");
+use("Estadistica");
 //db.Status_orders.updateOne({_id: 4}, {$set: {statusLed: "LOW"}})
 //db.Status_orders.updateMany({_id: { $in: [1, 2, 3, 4, 5] }}, {$set: {statusLed: "HIGH"}})
 //db.Status_orders.find();
@@ -35,16 +35,37 @@ use("Home");
   temperature: 20,
   Datatime: "2021-10-09T18:00:00.000Z",
 });*/
-db.Status_orders.insertMany([
+db.Estadistica20231114.insertMany([
   {
-    _id: 6,
-    nombre: "Puerta1S",
-    degrees:30,
+    _id: 1,
+    nombreLed:"Led1",
+    TiempoUsoHoras:0,
+    TiempoApagarHoras:0,
   },
   {
-    _id: 7,
-    nombre: "Puerta2S",
-    degrees:90,
+    _id: 2,
+    nombreLed:"Led2",
+    TiempoUsoHoras:0,
+    TiempoApagarHoras:0,
   },
+  {
+    _id: 3,
+    nombreLed:"Led3",
+    TiempoUsoHoras:0,
+    TiempoApagarHoras:0,
+  },
+  {
+    _id: 4,
+    nombreLed:"Led4",
+    TiempoUsoHoras:0,
+    TiempoApagarHoras:0,
+  },
+  {
+    _id: 5,
+    nombreLed:"Led5",
+    TiempoUsoHoras:0,
+    TiempoApagarHoras:0,
+  },
+
 ]);
 db.sensors_Data.find();

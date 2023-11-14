@@ -9,7 +9,6 @@ export default async (req: Request, res: Response) => {
   if (!name || !temperature) {
     return res.status(400).json({ error: 'Faltan datos requeridos' });
   }
-
   const sensorTemperature = new Sensortemperature(name, temperature, DataTime);
   let fecha = new Date();
   let stringfecha = fecha.toISOString();

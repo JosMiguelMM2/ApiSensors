@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { patchOrdersService } from '../../services/patchOrders/patchOrdersService';
 import { patchOrdersDServosService } from '../../services/patchServoOrders/patchServoOrders.server';
-import {SendSuccessResponse} from '../../utils/controllers/patchOrdersFunction/responseUtils';
+import { SendSuccessResponse } from '../../utils/controllers/patchOrdersFunction/responseUtils';
+import { getOrdersServiceFilterLeds } from '../../services/GetOrders/GetOrderServiceFilter';
+import {
+  fechaAString,
+  fechaStringString,
+} from '../../utils/controllers/patchOrdersFunction/fechaString';
+import { getOrdersServiceEstadisticas } from '../../services/GetEstadisticasServices/GetEstadisticas.Services';
 
 async function DoorOrder(
   req: Request,
@@ -52,8 +58,63 @@ export default async (req: Request, res: Response) => {
           message: 'Datos incorrectos',
         });
       } else {
-        const ejecution = await patchOrdersService(OrderIDInt, statusLed);
+        const dataOrders = await getOrdersServiceFilterLeds();
 
+        // Formatear la fecha como una cadena
+        let formattedDate: string = fechaAString();
+
+        for (let i = 0; i < dataOrders.length; i++) {
+          const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
+          if (RegistroID == OrderIDInt) {
+            const RegistroLed: string = dataOrders[i].statusLed;
+
+            if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
+              const coleccion: string =
+                'Estadistica' + fechaStringString(formattedDate);
+              const datos = await getOrdersServiceEstadisticas(coleccion);
+              console.log(datos);
+              if (datos.length > 0) {
+                for (let j = 0; j < datos.length; j++) {
+                  const RegistroID: Number = parseInt(
+                    datos[j]._id.toString(),
+                    16
+                  );
+                  if (OrderIDInt == RegistroID) {
+                    const nombreLed: string = datos[j].nombreLed;
+                    const TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
+                    const TiempoApagarHoras: number =datos[j].TiempoApagarHoras;
+                    console.log('Se traen de estadisticas ' + RegistroID);
+                    console.log('Se traen de estadisticas ' + nombreLed);
+                    console.log('Se traen de estadisticas ' + TiempoUsoHoras);
+                    console.log('Se traen de estadisticas ' + TiempoApagarHoras);
+                  }
+                }
+              }
+            } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
+              const coleccion: string =
+                'Estadistica' + fechaStringString(formattedDate);
+              const datos = await getOrdersServiceEstadisticas(coleccion);
+              if (datos.length > 0) {
+                for (let i = 0; i < datos.length; i++) {
+                  const RegistroID: number = parseInt(
+                    dataOrders[i]._id.toString(),
+                    16
+                  );
+                  console.log('Se traen de estadisticas ' + RegistroID);
+                }
+              }
+              console.log(datos);
+              console.log('Apagando Led');
+            } else {
+              formattedDate = dataOrders[i].fecha_modificacion;
+            }
+          }
+        }
+        const ejecution = await patchOrdersService(
+          OrderIDInt,
+          statusLed,
+          formattedDate
+        );
         SendSuccessResponse(ejecution, res);
       }
     } else {

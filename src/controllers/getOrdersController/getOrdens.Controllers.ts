@@ -1,9 +1,8 @@
 import { getOrdersService } from '../../services/GetOrders/getOrdersService';
 import { Request, Response } from 'express';
 
-export default async (req: Request, res: Response) => {
+export default async (_: Request, res: Response) => {
   try {
-    req.body;
     const data = await getOrdersService();
     res.status(200).json({
       status: 'success',
