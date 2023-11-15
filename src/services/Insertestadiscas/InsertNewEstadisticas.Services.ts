@@ -1,6 +1,6 @@
 import { conection } from '../../config/db';
 
-async function patchHistoryEstadistica(
+async function NewPatchHistoryEstadistica(
   idNew: Number,
   tiempo_uso: Number,
   tiempo_apagado: number,
@@ -8,20 +8,17 @@ async function patchHistoryEstadistica(
   NombreLed: string
 ) {
   try {
+
     const client = await conection();
     const result = await client
       .db('Estadistica')
       .collection(colecion)
-      .updateOne(
-        { _id: idNew },
-        {
-          $set: {
-            nombreLed: NombreLed,
-            TiempoUsoHoras: tiempo_uso,
-            TiempoApagarHoras: tiempo_apagado,
-          },
-        }
-      );
+      .insertOne({
+        _id: idNew,
+        nombreLed: NombreLed,
+        TiempoUsoHoras: tiempo_uso,
+        TiempoApagarHoras: tiempo_apagado,
+      }as any);
     client.close();
     const resulT = result.acknowledged;
     return resulT;
@@ -31,4 +28,4 @@ async function patchHistoryEstadistica(
   }
 }
 
-export { patchHistoryEstadistica };
+export { NewPatchHistoryEstadistica };

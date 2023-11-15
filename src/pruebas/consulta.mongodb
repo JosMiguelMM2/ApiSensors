@@ -35,7 +35,7 @@ use("Estadistica");
   temperature: 20,
   Datatime: "2021-10-09T18:00:00.000Z",
 });*/
-db.Estadistica20231114.insertMany([
+db.Estadistic20231114.insertMany([
   {
     _id: 1,
     nombreLed:"Led1",

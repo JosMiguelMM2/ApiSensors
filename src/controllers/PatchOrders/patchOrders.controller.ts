@@ -10,6 +10,7 @@ import {
 import { getOrdersServiceEstadisticas } from '../../services/GetEstadisticasServices/GetEstadisticas.Services';
 
 import { patchHistoryEstadistica } from '../../services/Insertestadiscas/InsertEstadisticas.Services';
+import { NewPatchHistoryEstadistica } from '../../services/Insertestadiscas/InsertNewEstadisticas.Services';
 async function DoorOrder(
   req: Request,
   res: Response,
@@ -66,18 +67,16 @@ export default async (req: Request, res: Response) => {
 
         for (let i = 0; i < dataOrders.length; i++) {
           const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
-
+          const nombre: string = dataOrders[i].nombre;
           if (RegistroID == OrderIDInt) {
             const RegistroLed: string = dataOrders[i].statusLed;
             const Fecha: string = dataOrders[i].fecha_modificacion;
-            console.log('Hora modificada ' + Fecha);
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
               const coleccion: string =
                 'Estadistica' + fechaStringString(formattedDate);
               const datos = await getOrdersServiceEstadisticas(coleccion);
-              console.log(datos);
-              if (datos.length > 0) {
+              if (datos[OrderIDInt]) {
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: Number = parseInt(
                     datos[j]._id.toString(),
@@ -86,15 +85,8 @@ export default async (req: Request, res: Response) => {
                   if (OrderIDInt == RegistroID) {
                     const nombreLed: string = datos[j].nombreLed;
                     const TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
-                    let TiempoApagarHoras: number =
-                      datos[j].TiempoApagarHoras;
+                    let TiempoApagarHoras: number = datos[j].TiempoApagarHoras;
 
-                    console.log('Se traen de estadisticas ' + RegistroID);
-                    console.log('Se traen de estadisticas ' + nombreLed);
-                    console.log('Se traen de estadisticas ' + TiempoUsoHoras);
-                    console.log(
-                      'Se traen de estadisticas ' + TiempoApagarHoras
-                    );
                     const fechaOriginal = new Date(Fecha);
                     const fechaActual = new Date();
 
@@ -106,33 +98,52 @@ export default async (req: Request, res: Response) => {
                     const horasDiferencia =
                       diferenciaEnMilisegundos / (1000 * 60 * 60);
 
-                      TiempoApagarHoras = TiempoApagarHoras+horasDiferencia
-                      console.log("Numero de horas" + horasDiferencia)
-                    const respuesInser=patchHistoryEstadistica(RegistroID,TiempoUsoHoras, TiempoApagarHoras, coleccion, nombreLed)
-                    console.log("Estadisticas ingresadas en horas apagadas "+respuesInser)
+                    TiempoApagarHoras = TiempoApagarHoras + horasDiferencia;
+                    console.log('Numero de horas' + horasDiferencia);
+                    const respuesInser = patchHistoryEstadistica(
+                      RegistroID,
+                      TiempoUsoHoras,
+                      TiempoApagarHoras,
+                      coleccion,
+                      nombreLed
+                    );
+                    console.log(
+                      'Estadisticas ingresadas en horas apagadas ' +
+                        respuesInser
+                    );
                   }
                 }
+              } else {
+                console.log('Id ' + RegistroID);
+                console.log('Nombre ' + nombre);
+
+                await NewPatchHistoryEstadistica(
+                  RegistroID,
+                  0,
+                  0,
+                  coleccion,
+                  nombre
+                );
               }
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
               const coleccion: string =
                 'Estadistica' + fechaStringString(formattedDate);
               const datos = await getOrdersServiceEstadisticas(coleccion);
-              if (datos.length > 0) {
-                for (let j= 0; j < datos.length; j++) {
-                  const RegistroID: number = parseInt(dataOrders[i]._id.toString(),16);
-                  console.log('Se traen de estadisticas ' + RegistroID);
+
+              if (datos[OrderIDInt]) {
+
+                for (let j = 0; j < datos.length; j++) {
+                  const RegistroID: number = parseInt(
+                    dataOrders[i]._id.toString(),
+                    16
+                  );
+
                   if (OrderIDInt == RegistroID) {
                     const nombreLed: string = datos[j].nombreLed;
-                    let  TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
+                    let TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
                     const TiempoApagarHoras: number =
                       datos[j].TiempoApagarHoras;
 
-                    console.log('Se traen de estadisticas ' + RegistroID);
-                    console.log('Se traen de estadisticas ' + nombreLed);
-                    console.log('Se traen de estadisticas ' + TiempoUsoHoras);
-                    console.log(
-                      'Se traen de estadisticas ' + TiempoApagarHoras
-                    );
                     const fechaOriginal = new Date(Fecha);
                     const fechaActual = new Date();
 
@@ -144,12 +155,32 @@ export default async (req: Request, res: Response) => {
                     const horasDiferencia =
                       diferenciaEnMilisegundos / (1000 * 60 * 60);
 
-                      TiempoUsoHoras = TiempoUsoHoras+horasDiferencia
-                      console.log("Numero de horas" + horasDiferencia)
-                    const respuesInser=patchHistoryEstadistica(RegistroID,TiempoUsoHoras, TiempoApagarHoras, coleccion, nombreLed)
-                    console.log("Estadisticas ingresadas en horas apagadas "+respuesInser)
+                    TiempoUsoHoras = TiempoUsoHoras + horasDiferencia;
+                    console.log('Numero de horas' + horasDiferencia);
+                    const respuesInser = patchHistoryEstadistica(
+                      RegistroID,
+                      TiempoUsoHoras,
+                      TiempoApagarHoras,
+                      coleccion,
+                      nombreLed
+                    );
+                    console.log(
+                      'Estadisticas ingresadas en horas apagadas ' +
+                        respuesInser
+                    );
                   }
                 }
+              } else {
+                console.log('Id ' + RegistroID);
+                console.log('Nombre ' + nombre);
+
+                await NewPatchHistoryEstadistica(
+                  RegistroID,
+                  0,
+                  0,
+                  coleccion,
+                  nombre
+                );
               }
               console.log(datos);
               console.log('Encendiendo');
