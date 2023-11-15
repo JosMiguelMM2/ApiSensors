@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && tsc ",
+    "build": "npm install && npm run tsc ",
     "dev": "npm-run-all --parallel tsc start:server",
     "start:server": "nodemon build/index.js",
     "start": "node build/index.js",
