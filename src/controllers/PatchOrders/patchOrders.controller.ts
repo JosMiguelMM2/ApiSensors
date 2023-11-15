@@ -9,6 +9,7 @@ import {
 } from '../../utils/controllers/patchOrdersFunction/fechaString';
 import { getOrdersServiceEstadisticas } from '../../services/GetEstadisticasServices/GetEstadisticas.Services';
 
+import { patchHistoryEstadistica } from '../../services/Insertestadiscas/InsertEstadisticas.Services';
 async function DoorOrder(
   req: Request,
   res: Response,
@@ -65,8 +66,11 @@ export default async (req: Request, res: Response) => {
 
         for (let i = 0; i < dataOrders.length; i++) {
           const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
+
           if (RegistroID == OrderIDInt) {
             const RegistroLed: string = dataOrders[i].statusLed;
+            const Fecha: string = dataOrders[i].fecha_modificacion;
+            console.log('Hora modificada ' + Fecha);
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
               const coleccion: string =
@@ -82,11 +86,30 @@ export default async (req: Request, res: Response) => {
                   if (OrderIDInt == RegistroID) {
                     const nombreLed: string = datos[j].nombreLed;
                     const TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
-                    const TiempoApagarHoras: number =datos[j].TiempoApagarHoras;
+                    let TiempoApagarHoras: number =
+                      datos[j].TiempoApagarHoras;
+
                     console.log('Se traen de estadisticas ' + RegistroID);
                     console.log('Se traen de estadisticas ' + nombreLed);
                     console.log('Se traen de estadisticas ' + TiempoUsoHoras);
-                    console.log('Se traen de estadisticas ' + TiempoApagarHoras);
+                    console.log(
+                      'Se traen de estadisticas ' + TiempoApagarHoras
+                    );
+                    const fechaOriginal = new Date(Fecha);
+                    const fechaActual = new Date();
+
+                    // Calcular la diferencia en milisegundos
+                    const diferenciaEnMilisegundos =
+                      fechaActual.getTime() - fechaOriginal.getTime();
+
+                    // Calcular la diferencia en horas
+                    const horasDiferencia =
+                      diferenciaEnMilisegundos / (1000 * 60 * 60);
+
+                      TiempoApagarHoras = TiempoApagarHoras+horasDiferencia
+                      console.log("Numero de horas" + horasDiferencia)
+                    const respuesInser=patchHistoryEstadistica(RegistroID,TiempoUsoHoras, TiempoApagarHoras, coleccion, nombreLed)
+                    console.log("Estadisticas ingresadas en horas apagadas "+respuesInser)
                   }
                 }
               }
