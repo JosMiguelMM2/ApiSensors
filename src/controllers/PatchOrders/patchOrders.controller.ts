@@ -76,7 +76,8 @@ export default async (req: Request, res: Response) => {
               const coleccion: string =
                 'Estadistica' + fechaStringString(formattedDate);
               const datos = await getOrdersServiceEstadisticas(coleccion);
-              if (datos[OrderIDInt]) {
+              const t = parseInt(datos[i]._id.toString(), 16);
+              if (t == OrderIDInt) {
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: Number = parseInt(
                     datos[j]._id.toString(),
@@ -99,24 +100,16 @@ export default async (req: Request, res: Response) => {
                       diferenciaEnMilisegundos / (1000 * 60 * 60);
 
                     TiempoApagarHoras = TiempoApagarHoras + horasDiferencia;
-                    console.log('Numero de horas' + horasDiferencia);
-                    const respuesInser = patchHistoryEstadistica(
+                    patchHistoryEstadistica(
                       RegistroID,
                       TiempoUsoHoras,
                       TiempoApagarHoras,
                       coleccion,
                       nombreLed
                     );
-                    console.log(
-                      'Estadisticas ingresadas en horas apagadas ' +
-                        respuesInser
-                    );
                   }
                 }
               } else {
-                console.log('Id ' + RegistroID);
-                console.log('Nombre ' + nombre);
-
                 await NewPatchHistoryEstadistica(
                   RegistroID,
                   0,
@@ -130,8 +123,8 @@ export default async (req: Request, res: Response) => {
                 'Estadistica' + fechaStringString(formattedDate);
               const datos = await getOrdersServiceEstadisticas(coleccion);
 
+              //const t=parseInt(datos[i]._id.toString(), 16);
               if (datos[OrderIDInt]) {
-
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: number = parseInt(
                     dataOrders[i]._id.toString(),
@@ -156,24 +149,16 @@ export default async (req: Request, res: Response) => {
                       diferenciaEnMilisegundos / (1000 * 60 * 60);
 
                     TiempoUsoHoras = TiempoUsoHoras + horasDiferencia;
-                    console.log('Numero de horas' + horasDiferencia);
-                    const respuesInser = patchHistoryEstadistica(
+                    patchHistoryEstadistica(
                       RegistroID,
                       TiempoUsoHoras,
                       TiempoApagarHoras,
                       coleccion,
                       nombreLed
                     );
-                    console.log(
-                      'Estadisticas ingresadas en horas apagadas ' +
-                        respuesInser
-                    );
                   }
                 }
               } else {
-                console.log('Id ' + RegistroID);
-                console.log('Nombre ' + nombre);
-
                 await NewPatchHistoryEstadistica(
                   RegistroID,
                   0,
@@ -182,8 +167,6 @@ export default async (req: Request, res: Response) => {
                   nombre
                 );
               }
-              console.log(datos);
-              console.log('Encendiendo');
             } else {
               formattedDate = dataOrders[i].fecha_modificacion;
             }
@@ -203,6 +186,7 @@ export default async (req: Request, res: Response) => {
     res.status(500).json({
       status: 'error',
       message: 'Error al procesar la solicitud',
+      error: error,
     });
   }
 };
