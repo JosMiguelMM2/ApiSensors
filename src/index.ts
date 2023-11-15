@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import indexroutes from './routers/index.routes';
-import config  from './dotenv/config';
+//import config  from './dotenv/config';
 const app = express();
 const PORT = 3000;
 
-const url = config().fontend.url;
+//const url = config().fontend.url;
 /*.use(
   cors({
     origin: `${url}`,
@@ -13,6 +13,8 @@ const url = config().fontend.url;
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
   })
 );*/
+
+//ggt
 app.use(cors());
 app.use(express.json());
 app.use(indexroutes);
