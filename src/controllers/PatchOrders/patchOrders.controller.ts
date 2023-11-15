@@ -64,6 +64,9 @@ export default async (req: Request, res: Response) => {
 
         // Formatear la fecha como una cadena
         let formattedDate: string = fechaAString();
+        const coleccion: string =
+          'Estadistica' + fechaStringString(formattedDate);
+        const datos = await getOrdersServiceEstadisticas(coleccion);
 
         for (let i = 0; i < dataOrders.length; i++) {
           const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
@@ -73,9 +76,9 @@ export default async (req: Request, res: Response) => {
             const Fecha: string = dataOrders[i].fecha_modificacion;
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
-              const coleccion: string =
-                'Estadistica' + fechaStringString(formattedDate);
-              const datos = await getOrdersServiceEstadisticas(coleccion);
+              //const coleccion: string =
+              // 'Estadistica' + fechaStringString(formattedDate);
+              ///const datos = await getOrdersServiceEstadisticas(coleccion);
               const t = parseInt(datos[i]._id.toString(), 16);
               if (t == OrderIDInt) {
                 for (let j = 0; j < datos.length; j++) {
@@ -119,12 +122,8 @@ export default async (req: Request, res: Response) => {
                 );
               }
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
-              const coleccion: string =
-                'Estadistica' + fechaStringString(formattedDate);
-              const datos = await getOrdersServiceEstadisticas(coleccion);
-
-              //const t=parseInt(datos[i]._id.toString(), 16);
-              if (datos[OrderIDInt]) {
+              const t = parseInt(datos[i]._id.toString(), 16);
+              if (t == OrderIDInt) {
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: number = parseInt(
                     dataOrders[i]._id.toString(),
