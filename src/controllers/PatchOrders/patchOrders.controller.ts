@@ -76,9 +76,6 @@ export default async (req: Request, res: Response) => {
             const Fecha: string = dataOrders[i].fecha_modificacion;
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
-              //const coleccion: string =
-              // 'Estadistica' + fechaStringString(formattedDate);
-              ///const datos = await getOrdersServiceEstadisticas(coleccion);
               const t = parseInt(datos[i]._id.toString(), 16);
               if (t == OrderIDInt) {
                 for (let j = 0; j < datos.length; j++) {
@@ -124,17 +121,17 @@ export default async (req: Request, res: Response) => {
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
               const t = parseInt(datos[i]._id.toString(), 16);
               if (t == OrderIDInt) {
-                for (let j = 0; j < datos.length; j++) {
+                for (let u = 0; u < datos.length; u++) {
                   const RegistroID: number = parseInt(
-                    dataOrders[i]._id.toString(),
+                    dataOrders[u]._id.toString(),
                     16
                   );
 
                   if (OrderIDInt == RegistroID) {
-                    const nombreLed: string = datos[j].nombreLed;
-                    let TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
+                    const nombreLed: string = datos[u].nombreLed;
+                    let TiempoUsoHoras: number = datos[u].TiempoUsoHoras;
                     const TiempoApagarHoras: number =
-                      datos[j].TiempoApagarHoras;
+                      datos[u].TiempoApagarHoras;
 
                     const fechaOriginal = new Date(Fecha);
                     const fechaActual = new Date();
