@@ -118,16 +118,41 @@ export default async (req: Request, res: Response) => {
                 'Estadistica' + fechaStringString(formattedDate);
               const datos = await getOrdersServiceEstadisticas(coleccion);
               if (datos.length > 0) {
-                for (let i = 0; i < datos.length; i++) {
-                  const RegistroID: number = parseInt(
-                    dataOrders[i]._id.toString(),
-                    16
-                  );
+                for (let j= 0; j < datos.length; j++) {
+                  const RegistroID: number = parseInt(dataOrders[i]._id.toString(),16);
                   console.log('Se traen de estadisticas ' + RegistroID);
+                  if (OrderIDInt == RegistroID) {
+                    const nombreLed: string = datos[j].nombreLed;
+                    let  TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
+                    const TiempoApagarHoras: number =
+                      datos[j].TiempoApagarHoras;
+
+                    console.log('Se traen de estadisticas ' + RegistroID);
+                    console.log('Se traen de estadisticas ' + nombreLed);
+                    console.log('Se traen de estadisticas ' + TiempoUsoHoras);
+                    console.log(
+                      'Se traen de estadisticas ' + TiempoApagarHoras
+                    );
+                    const fechaOriginal = new Date(Fecha);
+                    const fechaActual = new Date();
+
+                    // Calcular la diferencia en milisegundos
+                    const diferenciaEnMilisegundos =
+                      fechaActual.getTime() - fechaOriginal.getTime();
+
+                    // Calcular la diferencia en horas
+                    const horasDiferencia =
+                      diferenciaEnMilisegundos / (1000 * 60 * 60);
+
+                      TiempoUsoHoras = TiempoUsoHoras+horasDiferencia
+                      console.log("Numero de horas" + horasDiferencia)
+                    const respuesInser=patchHistoryEstadistica(RegistroID,TiempoUsoHoras, TiempoApagarHoras, coleccion, nombreLed)
+                    console.log("Estadisticas ingresadas en horas apagadas "+respuesInser)
+                  }
                 }
               }
               console.log(datos);
-              console.log('Apagando Led');
+              console.log('Encendiendo');
             } else {
               formattedDate = dataOrders[i].fecha_modificacion;
             }
