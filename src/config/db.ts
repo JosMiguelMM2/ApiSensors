@@ -12,6 +12,5 @@ const url = `mongodb+srv://${admin}:${passsword}${host}`;
 export async function conection() {
   const client = new MongoClient(url);
   client.connect();
-  console.log('Connected successfully to server');
   return client;
 }

@@ -79,7 +79,6 @@ export default async (req: Request, res: Response) => {
               let t;
               try {
                 t = parseInt(datos[i]._id.toString(), 16);
-                console.log('datos: ' + t);
                 t = 1;
               } catch (error) {
                 console.log('Error en el parseo de t: ' + t);
