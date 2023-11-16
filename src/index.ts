@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import indexroutes from './routers/index.routes';
-//import config  from './dotenv/config';
+import config  from './dotenv/config';
 const app = express();
-const PORT = 3000;
+const PORT = config().databaseMongoDB.port || 3000;
 
 //const url = config().fontend.url;
 /*.use(
