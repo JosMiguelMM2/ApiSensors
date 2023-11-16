@@ -76,8 +76,8 @@ export default async (req: Request, res: Response) => {
             const Fecha: string = dataOrders[i].fecha_modificacion;
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
-              const t = parseInt(datos[i]._id.toString(), 16);
-              if (t == OrderIDInt) {
+             // const t = parseInt(datos[i]._id.toString(), 16);
+              if (datos.length > 0) {
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: Number = parseInt(
                     datos[j]._id.toString(),
@@ -119,8 +119,8 @@ export default async (req: Request, res: Response) => {
                 );
               }
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
-              const t = parseInt(datos[i]._id.toString(), 16);
-              if (t == OrderIDInt) {
+              //const t = parseInt(datos[i]._id.toString(), 16);
+              if (datos.length > 0) {
                 for (let u = 0; u < datos.length; u++) {
                   const RegistroID: number = parseInt(
                     dataOrders[u]._id.toString(),
