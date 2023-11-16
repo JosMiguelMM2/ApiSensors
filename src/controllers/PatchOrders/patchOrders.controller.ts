@@ -76,8 +76,15 @@ export default async (req: Request, res: Response) => {
             const Fecha: string = dataOrders[i].fecha_modificacion;
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
-             // const t = parseInt(datos[i]._id.toString(), 16);
-              if (datos.length > 0) {
+              let t;
+              try {
+                t = parseInt(datos[OrderIDInt]._id.toString(), 16);
+              } catch (error) {
+                console.log('Error en el parseo de t: ' + t);
+                t = 0;
+              }
+
+              if (datos.length > 0 && t != 0) {
                 for (let j = 0; j < datos.length; j++) {
                   const RegistroID: Number = parseInt(
                     datos[j]._id.toString(),
@@ -119,8 +126,14 @@ export default async (req: Request, res: Response) => {
                 );
               }
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
-              //const t = parseInt(datos[i]._id.toString(), 16);
-              if (datos.length > 0) {
+              let t;
+              try {
+                t = parseInt(datos[i]._id.toString(), 16);
+              } catch (error) {
+                console.log('Error en el parseo de t: ' + t);
+                t = 0;
+              }
+              if (datos.length > 0 && t != 0) {
                 for (let u = 0; u < datos.length; u++) {
                   const RegistroID: number = parseInt(
                     dataOrders[u]._id.toString(),
@@ -132,7 +145,6 @@ export default async (req: Request, res: Response) => {
                     let TiempoUsoHoras: number = datos[u].TiempoUsoHoras;
                     const TiempoApagarHoras: number =
                       datos[u].TiempoApagarHoras;
-
 
                     const fechaOriginal = new Date(Fecha);
                     const fechaActual = new Date();
