@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && tsc ",
-    "dev": "npm-run-all --parallel tsc start:server",
+    "build": "npm install && npm run tsc",
+    "dev": "npm-run-all --parallel tscDev start:server",
     "start:server": "nodemon build/index.js",
     "start": "node build/index.js",
-    "tsc": "tsc --watch"
+    "tscDev": "tsc --watch",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
