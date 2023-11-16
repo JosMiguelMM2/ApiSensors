@@ -132,7 +132,7 @@ export default async (req: Request, res: Response) => {
                     let TiempoUsoHoras: number = datos[u].TiempoUsoHoras;
                     const TiempoApagarHoras: number =
                       datos[u].TiempoApagarHoras;
-                      //
+                      
 
                     const fechaOriginal = new Date(Fecha);
                     const fechaActual = new Date();
