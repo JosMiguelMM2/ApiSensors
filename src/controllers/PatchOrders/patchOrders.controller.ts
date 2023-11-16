@@ -36,7 +36,7 @@ async function DoorOrder(
 export default async (req: Request, res: Response) => {
   const OrderID = req.params.id;
   const OrderIDInt: number = parseInt(OrderID);
-  //try {
+  try {
     if (OrderIDInt > 5 && OrderIDInt <= 7) {
       switch (OrderIDInt) {
         case 6:
@@ -179,11 +179,11 @@ export default async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ error: 'Orden no encontrada' });
     }
- /* } catch (error) {
+  } catch (error) {
     res.status(500).json({
       status: 'error',
       message: 'Error al procesar la solicitud',
       error: error,
     });
-  }*/
+  }
 };
