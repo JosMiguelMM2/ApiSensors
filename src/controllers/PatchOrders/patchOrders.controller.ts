@@ -7,10 +7,10 @@ import {
   fechaAString,
   fechaStringString,
 } from '../../utils/controllers/patchOrdersFunction/fechaString';
-import { getOrdersServiceEstadisticas } from '../../services/GetEstadisticasServices/GetEstadisticas.Services';
-
 import { patchHistoryEstadistica } from '../../services/Insertestadiscas/InsertEstadisticas.Services';
 import { NewPatchHistoryEstadistica } from '../../services/Insertestadiscas/InsertNewEstadisticas.Services';
+import { getOrdersServiceEstadisticasOne } from '../../services/GetEstadisticasServices/GetEstadisticasOne.Services';
+
 async function DoorOrder(
   req: Request,
   res: Response,
@@ -66,7 +66,10 @@ export default async (req: Request, res: Response) => {
         let formattedDate: string = fechaAString();
         const coleccion: string =
           'Estadistica' + fechaStringString(formattedDate);
-        const datos = await getOrdersServiceEstadisticas(coleccion);
+        const datos = await getOrdersServiceEstadisticasOne(
+          coleccion,
+          OrderIDInt
+        );
 
         for (let i = 0; i < dataOrders.length; i++) {
           const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
@@ -76,49 +79,35 @@ export default async (req: Request, res: Response) => {
             const Fecha: string = dataOrders[i].fecha_modificacion;
 
             if (RegistroLed == 'LOW' && statusLed == 'HIGH') {
-              let t;
-              try {
-                t = parseInt(datos[i]._id.toString(), 16);
-                if (t == OrderIDInt) {
-                  t = 0;
-                }
-                t = 1;
-              } catch (error) {
-                console.log('Error en el parseo de t: ' + t);
-                t = 0;
-              }
+              if (datos.length > 0) {
+                const RegistroID: Number = parseInt(
+                  dataOrders[i]._id.toString(),
+                  16
+                );
+                if (OrderIDInt == RegistroID) {
+                  const nombreLed: string = datos[0].nombreLed;
+                  const TiempoUsoHoras: number = datos[0].TiempoUsoHoras;
+                  let TiempoApagarHoras: number = datos[0].TiempoApagarHoras;
 
-              if (datos.length > 0 && t != 0) {
-                for (let j = 0; j < datos.length; j++) {
-                  const RegistroID: Number = parseInt(
-                    datos[j]._id.toString(),
-                    16
+                  const fechaOriginal = new Date(Fecha);
+                  const fechaActual = new Date();
+
+                  // Calcular la diferencia en milisegundos
+                  const diferenciaEnMilisegundos =
+                    fechaActual.getTime() - fechaOriginal.getTime();
+
+                  // Calcular la diferencia en horas
+                  const horasDiferencia =
+                    diferenciaEnMilisegundos / (1000 * 60 * 60);
+
+                  TiempoApagarHoras = TiempoApagarHoras + horasDiferencia;
+                  patchHistoryEstadistica(
+                    RegistroID,
+                    TiempoUsoHoras,
+                    TiempoApagarHoras,
+                    coleccion,
+                    nombreLed
                   );
-                  if (OrderIDInt == RegistroID) {
-                    const nombreLed: string = datos[j].nombreLed;
-                    const TiempoUsoHoras: number = datos[j].TiempoUsoHoras;
-                    let TiempoApagarHoras: number = datos[j].TiempoApagarHoras;
-
-                    const fechaOriginal = new Date(Fecha);
-                    const fechaActual = new Date();
-
-                    // Calcular la diferencia en milisegundos
-                    const diferenciaEnMilisegundos =
-                      fechaActual.getTime() - fechaOriginal.getTime();
-
-                    // Calcular la diferencia en horas
-                    const horasDiferencia =
-                      diferenciaEnMilisegundos / (1000 * 60 * 60);
-
-                    TiempoApagarHoras = TiempoApagarHoras + horasDiferencia;
-                    patchHistoryEstadistica(
-                      RegistroID,
-                      TiempoUsoHoras,
-                      TiempoApagarHoras,
-                      coleccion,
-                      nombreLed
-                    );
-                  }
                 }
               } else {
                 await NewPatchHistoryEstadistica(
@@ -130,50 +119,36 @@ export default async (req: Request, res: Response) => {
                 );
               }
             } else if (RegistroLed == 'HIGH' && statusLed == 'LOW') {
-              let t;
-              try {
-                t = parseInt(datos[i]._id.toString(), 16);
-                if (t == OrderIDInt) {
-                  t = 0;
-                }
-                t = 1;
-              } catch (error) {
-                console.log('Error en el parseo de t: ' + t);
-                t = 0;
-              }
-              if (datos.length > 0 && t != 0) {
-                for (let u = 0; u < datos.length; u++) {
-                  const RegistroID: number = parseInt(
-                    dataOrders[u]._id.toString(),
-                    16
+              if (datos.length > 0) {
+                const RegistroID: number = parseInt(
+                  dataOrders[i]._id.toString(),
+                  16
+                );
+
+                if (OrderIDInt == RegistroID) {
+                  const nombreLed: string = datos[0].nombreLed;
+                  let TiempoUsoHoras: number = datos[0].TiempoUsoHoras;
+                  const TiempoApagarHoras: number = datos[0].TiempoApagarHoras;
+
+                  const fechaOriginal = new Date(Fecha);
+                  const fechaActual = new Date();
+
+                  // Calcular la diferencia en milisegundos
+                  const diferenciaEnMilisegundos =
+                    fechaActual.getTime() - fechaOriginal.getTime();
+
+                  // Calcular la diferencia en horas
+                  const horasDiferencia =
+                    diferenciaEnMilisegundos / (1000 * 60 * 60);
+
+                  TiempoUsoHoras = TiempoUsoHoras + horasDiferencia;
+                  patchHistoryEstadistica(
+                    RegistroID,
+                    TiempoUsoHoras,
+                    TiempoApagarHoras,
+                    coleccion,
+                    nombreLed
                   );
-
-                  if (OrderIDInt == RegistroID) {
-                    const nombreLed: string = datos[u].nombreLed;
-                    let TiempoUsoHoras: number = datos[u].TiempoUsoHoras;
-                    const TiempoApagarHoras: number =
-                      datos[u].TiempoApagarHoras;
-
-                    const fechaOriginal = new Date(Fecha);
-                    const fechaActual = new Date();
-
-                    // Calcular la diferencia en milisegundos
-                    const diferenciaEnMilisegundos =
-                      fechaActual.getTime() - fechaOriginal.getTime();
-
-                    // Calcular la diferencia en horas
-                    const horasDiferencia =
-                      diferenciaEnMilisegundos / (1000 * 60 * 60);
-
-                    TiempoUsoHoras = TiempoUsoHoras + horasDiferencia;
-                    patchHistoryEstadistica(
-                      RegistroID,
-                      TiempoUsoHoras,
-                      TiempoApagarHoras,
-                      coleccion,
-                      nombreLed
-                    );
-                  }
                 }
               } else {
                 await NewPatchHistoryEstadistica(

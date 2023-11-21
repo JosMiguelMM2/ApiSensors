@@ -1,12 +1,14 @@
 import { conection } from '../../config/db';
 
-async function getOrdersServiceEstadisticas(coleccion:string,) {
+async function getOrdersServiceEstadisticasOne(coleccion:string, id:number) {
   try {
     const client = await conection();
     const data = await client
       .db('Estadistica')
       .collection(coleccion)
-      .find({})
+      .find({
+        _id: id,
+      } as any)
       .sort({ _id: 1 }) // Ordena de forma ascendente por el campo _id
       .toArray();
     //client.close();
@@ -17,4 +19,4 @@ async function getOrdersServiceEstadisticas(coleccion:string,) {
   }
 }
 
-export { getOrdersServiceEstadisticas };
+export {getOrdersServiceEstadisticasOne };
