@@ -7,7 +7,7 @@ async function patchOrdersDServosService(idNew: Number, degreesNew: Number) {
       .db('Home')
       .collection('Status_orders')
       .updateOne({ _id: idNew }, { $set: { degrees: degreesNew } });
-    client.close();
+    //client.close();
     const resulT= result.acknowledged;
     return resulT;
   } catch (error) {

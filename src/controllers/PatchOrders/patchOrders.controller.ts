@@ -79,6 +79,9 @@ export default async (req: Request, res: Response) => {
               let t;
               try {
                 t = parseInt(datos[i]._id.toString(), 16);
+                if (t == OrderIDInt) {
+                  t = 0;
+                }
                 t = 1;
               } catch (error) {
                 console.log('Error en el parseo de t: ' + t);
@@ -130,6 +133,9 @@ export default async (req: Request, res: Response) => {
               let t;
               try {
                 t = parseInt(datos[i]._id.toString(), 16);
+                if (t == OrderIDInt) {
+                  t = 0;
+                }
                 t = 1;
               } catch (error) {
                 console.log('Error en el parseo de t: ' + t);

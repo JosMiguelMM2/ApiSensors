@@ -9,7 +9,7 @@ async function getOrdersServiceEstadisticas(coleccion:string) {
       .find({})
       .sort({ _id: 1 }) // Ordena de forma ascendente por el campo _id
       .toArray();
-    client.close();
+    //client.close();
     return data;
   } catch (error) {
     console.error('Error:', error);

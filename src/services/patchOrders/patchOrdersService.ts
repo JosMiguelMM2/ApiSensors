@@ -7,7 +7,7 @@ async function patchOrdersService(idNew: Number, statusLedNew: String, fecha_mod
       .db('Home')
       .collection('Status_orders')
       .updateOne({ _id: idNew }, { $set: { statusLed: statusLedNew, fecha_modificacion: fecha_modificacionNew, } });
-    client.close();
+    //client.close();
     const resulT= result.acknowledged;
     return resulT;
   } catch (error) {

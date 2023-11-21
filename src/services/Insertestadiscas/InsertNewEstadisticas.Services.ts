@@ -19,7 +19,7 @@ async function NewPatchHistoryEstadistica(
         TiempoUsoHoras: tiempo_uso,
         TiempoApagarHoras: tiempo_apagado,
       }as any);
-    client.close();
+    //client.close();
     const resulT = result.acknowledged;
     return resulT;
   } catch (error) {

@@ -22,7 +22,7 @@ async function patchHistoryEstadistica(
           },
         }
       );
-    client.close();
+    //client.close();
     const resulT = result.acknowledged;
     return resulT;
   } catch (error) {

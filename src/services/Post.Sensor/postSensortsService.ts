@@ -14,7 +14,7 @@ async function postSensorsService(model: Sensortemperature) {
       .db('Home')
       .collection('sensors_Data')
       .insertOne(newDocument);
-    client.close();
+    //client.close();
 
     if (result.acknowledged) {
       return 'Inserción exitosa';
