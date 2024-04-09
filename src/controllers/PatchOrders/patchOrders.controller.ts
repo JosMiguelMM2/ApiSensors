@@ -66,10 +66,7 @@ export default async (req: Request, res: Response) => {
         let formattedDate: string = fechaAString();
         const coleccion: string =
           'Estadistica' + fechaStringString(formattedDate);
-        const datos = await getOrdersServiceEstadisticasOne(
-          coleccion,
-          OrderIDInt
-        );
+        const datos = await getOrdersServiceEstadisticasOne(coleccion,OrderIDInt);
 
         for (let i = 0; i < dataOrders.length; i++) {
           const RegistroID: number = parseInt(dataOrders[i]._id.toString(), 16);
